@@ -1,0 +1,25 @@
+#TIMEHORIZON T = 8760;
+
+#NODE Tech
+#PARAMETERS
+minimum_capacity = ...;
+maximal_capacity = ...;
+cp = ...;
+invest_cost =  ...;
+maintenance_cost = ...;
+lifetime = ...;
+
+timeseries = {};
+
+#VARIABLES
+internal: capacity;
+external : current_capacity[T];
+
+#CONSTRAINTS
+minimal_capacity <= capacity;
+capacity <= maximal_capacity;
+current_capacity[t] <= capacity*timeseries[t];
+sum(current_capacity[i] for i in [0:T-1]) <= capacity * cp*T;
+
+#OBJECTIVES
+min: capacity*(invest_cost+ maintenance_cost*lifetime);
