@@ -1,25 +1,30 @@
 #TIMEHORIZON T = 8760;
 
 #NODE Tech
-#PARAMETERS
-minimum_capacity = ...;
-maximal_capacity = ...;
-cp = ...;
-invest_cost =  ...;
-maintenance_cost = ...;
-lifetime = ...;
 
-timeseries = {};
+    #PARAMETERS
+        minimum_capacity = ...;
+        maximal_capacity = ...;
+        cp = ...;
+        invest_cost =  ...;
+        maintenance_cost = ...;
+        lifetime = ...;
+        conv_efficiency = ...;
+        timeseries = {};
 
-#VARIABLES
-internal: capacity;
-external : current_capacity[T];
+    #VARIABLES
+        internal: capacity;
+        external : current_capacity[T];
+        internal : main_input[T];
+        internal : main_output[T];
 
-#CONSTRAINTS
-minimal_capacity <= capacity;
-capacity <= maximal_capacity;
-current_capacity[t] <= capacity*timeseries[t];
-sum(current_capacity[i] for i in [0:T-1]) <= capacity * cp*T;
+    #CONSTRAINTS
+        minimal_capacity <= capacity;
+        capacity <= maximal_capacity;
+        current_capacity[t] <= capacity*timeseries[t];
+        sum(current_capacity[i] for i in [0:T-1]) <= capacity * cp*T;
+        main_output[t]==main_input[t]*conv_efficiency;
 
-#OBJECTIVES
-min: capacity*(invest_cost+ maintenance_cost*lifetime);
+    #OBJECTIVES
+        min: capacity*(invest_cost/lifetime+ maintenance_cost);
+

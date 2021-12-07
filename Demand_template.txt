@@ -1,0 +1,27 @@
+
+#NODE DEMAND
+
+    #PARAMETERS
+        // Mkm passager/year
+        yearly_demand_mob = ...;
+
+        //GWh/year
+        yearly_demand_elec = ...;
+        yearly_demand_heat = ...;
+
+        //normalized
+        mob = import "";
+        heat = import "";
+        elec = import "";
+
+    #VARIABLES
+        external : demand_elec[T];
+        external : demand_heat[T];
+        external : demand_mob[T]:
+
+    #CONSTRAINTS
+
+        demand_mob[t] == mob[t]*yearly_demand_mob;
+        demand_elec[t] == elec[t]*yearly_demand_elec;
+        demand_heat[t] == heat[t]*yearly_demand_heat;
+
