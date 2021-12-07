@@ -1,0 +1,29 @@
+#TIMEHORIZON
+T = 8760 * 1; 
+
+#GLOBAL 
+
+#NODE HEAT_PUMP
+#PARAMETERS
+timeseries = 1
+C_inv = 345; // M€/GWth
+c_maint = 12; // M€/GWth
+lifetime = 25; // years
+cp = 0.95;
+ratio_heat_to_elec = 4;
+capacity_min = 0; 
+capacity_max = 9999;
+#VARIABLES
+internal: capacity;
+external: electricity[t]; // GWhe
+external: heat[t]; // GWhth
+#CONSTRAINTS
+capacity <= capacity_max;
+capacity_min <= capacity;
+heat[t] <= capacity * timeseries;
+sum(heat[i] for i in [0:T-1]) <= cp * capacity * T;
+heat[t] >= 0; 
+electricity[t] == heat[t]/ratio_heat_to_el;
+#OBJECTIVES
+min: capacity * (C_inv/lifetime + c_maint); 
+
